@@ -10,4 +10,4 @@ Features:
 - Only has admin view
 - POST and GET requests from python CV model
 
-NOTE: The AI Computer Vision was made by my groupmate.
+NOTE: The AI Computer Vision was made by my groupmate using the mobilenet_iter_73000.caffemodel from MobileNet SSD Model.
