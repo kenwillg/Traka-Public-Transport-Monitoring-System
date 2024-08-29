@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Mukta"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Paytone+One&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="/styles/reports.css" />
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.6/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <div id="sidebar">
+        <a href="/">
+          <span class="material-icons-round">home</span>
+          <h3 class="sidebar-text">Home</h3>
+        </a>
+        <a href="/analytics-weekly">
+          <span class="material-icons-round">insights</span>
+          <h3 class="sidebar-text">Analytics</h3>
+        </a>
+        <a href="/drivers">
+          <span class="material-icons-round">group</span>
+          <h3 class="sidebar-text">Drivers</h3>
+        </a>
+        <a href="/live-view">
+          <span class="material-icons-round">map</span>
+          <h3 class="sidebar-text">Live View</h3>
+        </a>
+        <!-- <a href="/settings">
+          <span class="material-icons-round">settings</span>
+          <h3 class="sidebar-text">Settings</h3>
+        </a> -->
+        <a href="/reports">
+          <span class="material-icons-round">report</span>
+          <h3 class="sidebar-text">Reports</h3>
+          <span class="report-count">2</span>
+        </a>
+        <a href="#">
+          <span class="material-icons-round">logout</span>
+          <h3 class="sidebar-text">Logout</h3>
+        </a>
+      </div>
+      <div class="inner-container">
+        <nav>
+          <div class="nav-logo">
+            <p class="traka-logo-type">TraKa</p>
+            <p class="traka-logo-desc">Dashboard</p>
+          </div>
+          <p class="nav-greeting">Hello, Traka Administrator.</p>
+        </nav>
+        <main>
+          <h2>Reports</h2>
+          <div id="reports"></div>
+        </main>
+        <footer>
+          Group 7 - Urban Monitoring Kenneth, Fitrah, Wahyu, all rights
+          reserved.&copy;
+        </footer>
+      </div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        fetch("/google-sheet-data")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(
+                "Network response was not ok " + response.statusText
+              );
+            }
+            return response.json();
+          })
+          .then((data) => {
+            const reportsContainer = document.getElementById("reports");
+            if (Array.isArray(data) && data.length > 0) {
+              const table = document.createElement("table");
+              data.forEach((row) => {
+                const tr = document.createElement("tr");
+                row.forEach((cell) => {
+                  const td = document.createElement("td");
+                  td.textContent = cell;
+                  tr.appendChild(td);
+                });
+                table.appendChild(tr);
+              });
+              reportsContainer.appendChild(table);
+            } else {
+              reportsContainer.textContent = "No data available";
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching reports:", error);
+            const reportsContainer = document.getElementById("reports");
+            reportsContainer.textContent = "Failed to load reports";
+          });
+      });
+    </script>
+  </body>
+</html>

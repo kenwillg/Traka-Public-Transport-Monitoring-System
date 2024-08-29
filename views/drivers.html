@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Mukta"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Paytone+One&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="/styles/drivers.css" />
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.6/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <style>
+      /* width */
+      ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+
+      /* Track */
+      ::-webkit-scrollbar-track {
+        display: none;
+      }
+
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: #a69a9a;
+        border-radius: 30px;
+      }
+
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+
+      .driver-card {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 10px;
+        margin: 10px 0;
+        display: flex;
+        align-items: center;
+      }
+
+      .driver-card img {
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+    </style>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <div id="sidebar">
+        <a href="/">
+          <span class="material-icons-round">home</span>
+          <h3 class="sidebar-text">Home</h3>
+        </a>
+        <a href="/analytics-weekly">
+          <span class="material-icons-round">insights</span>
+          <h3 class="sidebar-text">Analytics</h3>
+        </a>
+        <a href="/drivers">
+          <span class="material-icons-round">group</span>
+          <h3 class="sidebar-text">Drivers</h3>
+        </a>
+        <a href="/live-view">
+          <span class="material-icons-round">map</span>
+          <h3 class="sidebar-text">Live View</h3>
+        </a>
+        <!-- <a href="/settings">
+          <span class="material-icons-round">settings</span>
+          <h3 class="sidebar-text">Settings</h3>
+        </a> -->
+        <a href="/reports">
+          <span class="material-icons-round">report</span>
+          <h3 class="sidebar-text">Reports</h3>
+          <span class="report-count">2</span>
+        </a>
+        <a href="#">
+          <span class="material-icons-round">logout</span>
+          <h3 class="sidebar-text">Logout</h3>
+        </a>
+      </div>
+      <div class="inner-container">
+        <nav>
+          <div class="nav-logo">
+            <p class="traka-logo-type">TraKa</p>
+            <p class="traka-logo-desc">Dashboard</p>
+          </div>
+          <p class="nav-greeting">Hello, Traka Administrator.</p>
+          <button id="openFormBtn">
+            <span class="material-icons-round"> person_add </span> Add Driver
+          </button>
+        </nav>
+
+        <main>
+          <div id="drivers"></div>
+        </main>
+        <footer>
+          Group 7 - Urban Monitoring Kenneth, Fitrah, Wahyu, all rights
+          reserved.&copy;
+        </footer>
+      </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popup">
+      <span class="close-btn" id="closeBtn">&times;</span>
+      <form id="driverForm" enctype="multipart/form-data">
+        <input type="text" id="name" name="name" placeholder="Name" required />
+        <input type="number" id="age" name="age" placeholder="Age" required />
+        <input
+          type="text"
+          id="address"
+          name="address"
+          placeholder="Address"
+          required
+        />
+        <input
+          type="file"
+          id="driverImage"
+          name="driverImage"
+          accept="image/*"
+          capture="environment"
+          required
+        />
+
+        <button type="submit">Add Driver</button>
+      </form>
+      <div id="feedback"></div>
+    </div>
+
+    <script>
+      const openFormBtn = document.getElementById("openFormBtn");
+      const closeBtn = document.getElementById("closeBtn");
+      const overlay = document.getElementById("overlay");
+      const popup = document.getElementById("popup");
+
+      openFormBtn.addEventListener("click", () => {
+        overlay.style.display = "block";
+        popup.style.display = "block";
+      });
+
+      closeBtn.addEventListener("click", () => {
+        overlay.style.display = "none";
+        popup.style.display = "none";
+      });
+
+      document
+        .getElementById("driverForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const formData = new FormData();
+          formData.append("name", document.getElementById("name").value);
+          formData.append("age", document.getElementById("age").value);
+          formData.append("address", document.getElementById("address").value);
+          formData.append(
+            "driverImage",
+            document.getElementById("driverImage").files[0]
+          );
+
+          try {
+            const response = await fetch("/add-driver", {
+              method: "POST",
+              body: formData,
+            });
+
+            const feedback = document.getElementById("feedback");
+
+            if (response.ok) {
+              const newDriver = await response.json();
+              addDriverToDOM(newDriver);
+              feedback.textContent = "Driver added successfully!";
+              feedback.style.color = "green";
+            } else {
+              feedback.textContent = "Failed to add driver.";
+              feedback.style.color = "red";
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            feedback.textContent = "Failed to add driver.";
+            feedback.style.color = "red";
+          }
+        });
+
+      function addDriverToDOM(driver) {
+        const driversDiv = document.getElementById("drivers"); // Target main section's driver container
+        const driverCard = document.createElement("div");
+        driverCard.className = "driver-card";
+        driverCard.innerHTML = `
+          <img src="${driver.imageUrl}" alt="${driver.name}'s picture" width="50" />
+          <div>
+            <h3>${driver.name}</h3>
+            <p>Age: ${driver.age}</p>
+            <p>Address: ${driver.address}</p>
+          </div>
+        `;
+        driversDiv.appendChild(driverCard);
+      }
+
+      async function fetchDrivers() {
+        try {
+          const response = await fetch("/drivers-list");
+          const drivers = await response.json();
+          drivers.forEach((driver) => addDriverToDOM(driver));
+        } catch (error) {
+          console.error("Error fetching drivers:", error);
+        }
+      }
+
+      window.onload = fetchDrivers;
+    </script>
+  </body>
+</html>

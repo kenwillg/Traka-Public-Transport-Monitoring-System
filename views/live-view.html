@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Mukta"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Paytone+One&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="/styles/live-view.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.6/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="/scripts/map.js" type="text/javascript" defer></script>
+    <style>
+      /* width */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  display: none;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #a69a9a; 
+  border-radius: 30px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+    </style>
+        <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""
+      />
+      <!-- Make sure you put this AFTER Leaflet's CSS -->
+      <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""
+      ></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- <img src="public/assets/bg.jpg" /> -->
+    <div class="container">
+      <div id="sidebar">
+        <a href="/">
+          <span class="material-icons-round"> home </span>
+          <h3 class="sidebar-text">Home</h3>
+        </a>
+        <a href="/analytics-weekly">
+          <span class="material-icons-round"> insights </span>
+          <h3 class="sidebar-text">Analytics</h3>
+        </a>
+        <a href="/drivers">
+          <span class="material-icons-round"> group </span>
+          <h3 class="sidebar-text">Drivers</h3>
+        </a>
+        <a href="/live-view">
+          <span class="material-icons-round"> map </span>
+          <h3 class="sidebar-text">Live View</h3>
+        </a>
+        <!-- <a href="/settings">
+          <span class="material-icons-round"> settings </span>
+          <h3 class="sidebar-text">Settings</h3>
+        </a> -->
+
+        <a href="/reports">
+          <span class="material-icons-round"> report </span>
+          <h3 class="sidebar-text">Reports</h3>
+          <span class="report-count">2</span>
+        </a>
+        <a href="#">
+          <span class="material-icons-round"> logout </span>
+          <h3 class="sidebar-text">Logout</h3>
+        </a>
+      </div>
+      <div class="inner-container">
+        <nav>
+          <div class="nav-logo">
+            <p class="traka-logo-type">TraKa</p>
+            <p class="traka-logo-desc">Dashboard</p>
+          </div>
+          <p class="nav-greeting">Hello, Traka Administrator.</p>
+        </nav>
+
+        <main>
+            <div id="map">
+        </main>
+        <footer>
+          Group 7 - Urban Monitoring Kenneth, Fitrah, Wahyu, all rights
+          reserved.&copy;
+        </footer>
+      </div>
+    </div>
+  </body>
+</body>
+</html>
